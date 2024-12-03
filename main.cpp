@@ -1,7 +1,6 @@
 #include <NvInfer.h>
 #include <NvOnnxParser.h>
 #include <NvInferRuntimeCommon.h>
-#include <cuda_runtime_api.h>
 #include <fstream>
 #include <iostream>
 #include <chrono>
@@ -9,9 +8,6 @@
 #include <string>
 #include <filesystem>
 #include <optional>
-#include <opencv2/opencv.hpp>
-#include <cuda_fp16.h>
-#include <cuda_runtime.h>
 #include <cassert>
 #define ASSERT(condition) assert(condition)
 using namespace nvinfer1;
@@ -115,7 +111,7 @@ class Logger : public ILogger
         }
         if(severity <= nvinfer1::ILogger::Severity::kINFO)
         {
-            std::cerr << colorCode << "[TRT] " << start << msg << resetColor << std::endl;
+            std::cerr << colorCode << "[TRTFramework] " << start << msg << resetColor << std::endl;
         }
     }
 } gLogger;
@@ -362,6 +358,8 @@ int main(int argc, char** argv)
 
         std::cout << "[INT8] Latency(Avg): " << result_8.first << " ms" << std::endl;
         std::cout << "[INT8] Throughout: " << result_8.second << " 추론/초" << std::endl;
+
+        std::cout << "====================================================================" << std::endl;
 
         std::cout << "[DLA][FP32] Latency(Avg): " << dla_result_32.first << " ms" << std::endl;
         std::cout << "[DLA][FP32] Throughout: " << dla_result_32.second << " 추론/초" << std::endl;

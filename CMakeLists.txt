@@ -9,23 +9,19 @@ set(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda)
 set(TensorRT_DIR "/usr/include/x86_64-linux-gnu")
 
 find_package(CUDA REQUIRED)
-find_package(OpenCV REQUIRED)
 
 include_directories(${CUDA_INCLUDE_DIRS} )
 link_directories(${CUDA_LIBRARY_DIRS} )
 
-include_directories(${OpenCV_INCLUDE_DIRS} )
-link_directories(${OpenCV_LIBRARY_DIRS} )
-
-link_libraries(nvinfer nvonnxparser ${CUDA_LIBRARIES} ${OpenCV_LIBRARIES})
+link_libraries(nvinfer nvonnxparser ${CUDA_LIBRARIES})
 
 add_executable(trtframework main.cpp
     TRT/CTRTEngine.h TRT/CTRTEngine.cpp
     TRT/common.h)
 
 include(GNUInstallDirs)
-install(TARGETS tensorrt
+install(TARGETS trtframework
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-target_link_libraries(trtframework ${CUDA_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(trtframework ${CUDA_LIBRARIES})
